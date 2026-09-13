@@ -531,9 +531,6 @@ using namespace esphome::climate;
             default:
               this->mode = CLIMATE_MODE_AUTO;
               break;
-            case 7:                                    // 原本是 case 0:
-              this->fan_mode = CLIMATE_FAN_QUIET;      // 遙控器「靜」
-              break;
           }
 
           if (mode == CLIMATE_MODE_OFF) {
@@ -546,7 +543,7 @@ using namespace esphome::climate;
         //case SERVICE_ID_FAN_SPEED:
           this->fan_mode = CLIMATE_FAN_AUTO;
           switch (response[i + 2]) {
-            case 0:
+            case 7:
               this->fan_mode = CLIMATE_FAN_QUIET;
             break;
             case 2:
