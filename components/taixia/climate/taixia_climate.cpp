@@ -255,7 +255,7 @@ using namespace esphome::climate;
           command[4] = 1;
         break;
         case climate::CLIMATE_FAN_AUTO:
-          command[4] = 0;
+          command[4] = 5;
         break;
         case climate::CLIMATE_FAN_LOW:
           command[4] = 2;
@@ -270,13 +270,13 @@ using namespace esphome::climate;
           command[4] = 3;
         break;
         case climate::CLIMATE_FAN_FOCUS:
-          command[4] = 5;
-        break;
-        case climate::CLIMATE_FAN_DIFFUSE:
           command[4] = 6;
         break;
-        case climate::CLIMATE_FAN_QUIET:
+        case climate::CLIMATE_FAN_DIFFUSE:
           command[4] = 1;
+        break;
+        case climate::CLIMATE_FAN_QUIET:
+          command[4] = 0;
         break;
       }
       command[5] = this->parent_->checksum(command, 5);
@@ -422,6 +422,8 @@ using namespace esphome::climate;
         this->traits_.add_supported_fan_mode(CLIMATE_FAN_DIFFUSE);
       if (this->fan_modes_ & 1 << CLIMATE_FAN_QUIET)
         this->traits_.add_supported_fan_mode(CLIMATE_FAN_QUIET);
+      if (this->fan_modes_ & 1 << CLIMATE_FAN_AUTO)
+        this->traits_.add_supported_fan_mode(CLIMATE_FAN_AUTO);
 
       if (this->swing_modes_ >= 1) {
         if (this->swing_modes_ & 1 << CLIMATE_SWING_VERTICAL)
@@ -542,7 +544,7 @@ using namespace esphome::climate;
           this->fan_mode = CLIMATE_FAN_AUTO;
           switch (response[i + 2]) {
             case 0:
-              this->fan_mode = CLIMATE_FAN_AUTO;
+              this->fan_mode = CLIMATE_FAN_QUIET;
             break;
             case 2:
               this->fan_mode = CLIMATE_FAN_LOW;
@@ -557,13 +559,13 @@ using namespace esphome::climate;
             //  this->fan_mode = CLIMATE_FAN_MIDDLE;
             //break;
             case 5:
-              this->fan_mode = CLIMATE_FAN_FOCUS;
+              this->fan_mode = CLIMATE_FAN_AUTO;
             break;
             case 6:
-              this->fan_mode = CLIMATE_FAN_DIFFUSE;
+              this->fan_mode = CLIMATE_FAN_FOCUS;
             break;
             case 1:
-              this->fan_mode = CLIMATE_FAN_QUIET;
+              this->fan_mode = CLIMATE_FAN_DIFFUSE;
             break;
           }
           break;
