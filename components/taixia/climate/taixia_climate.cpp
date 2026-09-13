@@ -116,7 +116,7 @@ using namespace esphome::climate;
               case CLIMATE_MODE_FAN_ONLY:
                 mode = 2;
                 break;
-  //            case CLIMATE_MODE_AUTO:
+              case CLIMATE_MODE_AUTO:
               default:
                 mode = 3;
                 break;
@@ -276,7 +276,7 @@ using namespace esphome::climate;
           command[4] = 1;
         break;
         case climate::CLIMATE_FAN_QUIET:
-          command[4] = 0;
+          command[4] = 7;
         break;
       }
       command[5] = this->parent_->checksum(command, 5);
@@ -530,6 +530,9 @@ using namespace esphome::climate;
             case 3:
             default:
               this->mode = CLIMATE_MODE_AUTO;
+              break;
+            case 7:                                    // 原本是 case 0:
+              this->fan_mode = CLIMATE_FAN_QUIET;      // 遙控器「靜」
               break;
           }
 
